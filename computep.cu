@@ -18,23 +18,22 @@ Input:
 Output: None, calculates accelereration matrix and then sums the columns for signle acceleration effect for an object
 */
 __global__ void p_compute(vector3* values, vector3** accels, vector3* d_hPos, vector3* d_hVel, double *d_mass){
-    int currID = blockIdx.x * blockDim.x + threadIdx.x; //current thread block
-    int i = currID / NUMENTITIES; //locate position
+    int currID = blockIdx.x * blockDim.x + threadIdx.x; //current thread block shoutout google
+    int i = currID / NUMENTITIES; //locate position once again shoutout google
     int j = currID % NUMENTITIES;
-    int k;
     accels[currID] = &values[currID*NUMENTITIES]; //accels array for all the accel pointers
     if(currID < NUMENTITIES*NUMENTITIES){
         if(i == j){ //imma keep it a full stack(no pun intended) I copied this from the compute.c file
             FILL_VECTOR(accels[i][j],0,0,0);
         }else{
             vector3 distance;
-            for (k=0;k<3;k++) distance[k]=d_hPos[i][k]-d_hPos[j][k];
+            for (int k=0;k<3;k++) distance[k]=d_hPos[i][k]-d_hPos[j][k];
 			double magnitude_sq=distance[0]*distance[0]+distance[1]*distance[1]+distance[2]*distance[2];
 			double magnitude=sqrt(magnitude_sq);
 			double accelmag=-1*GRAV_CONSTANT*d_mass[j]/magnitude_sq;
 			FILL_VECTOR(accels[i][j],accelmag*distance[0]/magnitude,accelmag*distance[1]/magnitude,accelmag*distance[2]/magnitude);
         }
-        vector3 accel_sum = {(double) *(accels[currID])[0], (double) *(accels[currID])[1], (double) *(accels[currID])[2]}; //sum accelerations
+        vector3 accel_sum = {(double) *(accels[currID])[0], (double) *(accels[currID])[1], (double) *(accels[currID])[2]}; //accel array vals
 		/* doing this shit manually theres gotta be a better way
         d_hVel[i][0] = d_hVel[i][0]+accel_sum[0]*INTERVAL; //updating the relative acceleration and velocities
 		d_hPos[i][0] = d_hVel[i][0]*INTERVAL;
