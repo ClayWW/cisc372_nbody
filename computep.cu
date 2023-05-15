@@ -61,9 +61,9 @@ void compute(){
     cudaMemcpy(d_hVel, hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyHostToDevice);
     cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
     paccel<<<fullgrid, blockdim>>>(d_acc, d_hPos, d_mass); //compute accelerations in parallel
-    cudaDeviceSynchronization();
+    cudaDeviceSynchronize();
     psum<<<fullgrid.x, blockdim.x>>>(d_acc, d_sum, d_hPos, d_hVel); //sum in parallel
-    cudaDeviceSynchronization();
+    cudaDeviceSynchronize();
     cudaMemcpy(hPos, d_hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDeviceToHost); //copy from device to host memory
     cudaMemcpy(hVel, d_hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDeviceToHost);
     cudaFree(d_hPos); //free everything that was allocated
