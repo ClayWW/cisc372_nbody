@@ -5,16 +5,17 @@
 #include "cuda.h"
 #include <cuda_runtime.h>
 
+//globals
 vector3* values;
 vector3** accels;
 /*
 p_compute: performs the same function as compute.c but in parrallel
 Input:
-    vector3* values: 
-    vector3* accels:
-    vector3* d_hPos:
-    vector3* d_hVel:
-    double d_mass:
+    Globals
+    +
+    vector3* d_hPos: position on device
+    vector3* d_hVel: velocity on device
+    double d_mass: mass on device
 Output: None, calculates accelereration matrix and then sums the columns for signle acceleration effect for an object
 */
 __global__ void p_compute(vector3* values, vector3** accels, vector3* d_hPos, vector3* d_hVel, double *d_mass){

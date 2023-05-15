@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 	#ifdef DEBUG
 	printSystem(stdout);
 	#endif
-	for (t_now=0;t_now<DURATION;t_now+=INTERx){
+	for (t_now=0;t_now<DURATION;t_now+=INTERVAL){
 		compute();
 	}
 	clock_t t1=clock()-t0;
