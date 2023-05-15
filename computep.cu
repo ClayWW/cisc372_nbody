@@ -49,8 +49,8 @@ void compute(){
     vector3 *d_hVel;
     vector3 *d_hPos;
     vector3 *d_acc;
-    vector3* d_sum;
-    double d_mass;
+    vector3 *d_sum;
+    double *d_mass;
     int blocks = ceilf(NUMENTITIES/16.0f);  //defining our blocks and threads
     int threads = ceilf(NUMENTITIES/(float)blocks);
     dim3 fullgrid(blocks, blocks, 1);
