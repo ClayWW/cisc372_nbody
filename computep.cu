@@ -5,10 +5,7 @@
 #include "cuda.h"
 #include <cuda_runtime.h>
 
-vector3* vals;
-vector3** accels;
-
-__global__ void paccel(vector3* vals, vector3** accels, vector3* d_vel, vector3* d_pos, double* d_mass){
+__global__ void paccel(vector3** accels, vector3* d_Pos, double *d_mass){
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     int j = blockIdx.y * blockDim.y + threadIdx.y;
     int k;
@@ -27,7 +24,7 @@ __global__ void paccel(vector3* vals, vector3** accels, vector3* d_vel, vector3*
 
 }
 
-__global__ void psum(vector3 *hVel, vector3* hPos, vector3** accels, vector3* accel_sum){
+__global__ void psum(vector3** accels, vector3* accel_sum, vector3* d_hPos, vector3* d_hVel){
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     int j,k;
     if(i < NUMENTITIES){
@@ -63,9 +60,10 @@ void compute(){
     cudaMemcpy(d_hPos, hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyHostToDevice); //copying data from host to device memory
     cudaMemcpy(d_hVel, hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyHostToDevice);
     cudaMemcpy(d_mass, mass, sizeof(double) * NUMENTITIES, cudaMemcpyHostToDevice);
-    paccel<<<fullgrid, blockdim>>>(d_hPos,d_acc,d_mass); //compute accelerations in parallel
+    paccel<<<fullgrid, blockdim>>>(d_acc, d_hPos, d_mass); //compute accelerations in parallel
     cudaDeviceSynchronization();
     psum<<<fullgrid.x, blockdim.x>>>(d_acc, d_sum, d_hPos, d_hVel); //sum in parallel
+    cudaDeviceSynchronization();
     cudaMemcpy(hPojhjjhs, d_hPos, sizeof(vector3) * NUMENTITIES, cudaMemcpyDeviceToHost); //copy from device to host memory
     cudaMemcpy(hVel, d_hVel, sizeof(vector3) * NUMENTITIES, cudaMemcpyDeviceToHost);
     cudaFree(d_hPos); //free everything that was allocated
