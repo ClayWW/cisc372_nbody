@@ -14,7 +14,7 @@ __global__ void paccel(vector3** accels, vector3* d_Pos, double *d_mass){
             FILL_VECTOR(accels[i][j],0,0,0);
         }else{
             vector3 distance;
-            for (k=0;k<3;k++) distance[k]=d_pos[i][k]-d_pos[j][k];
+            for (k=0;k<3;k++) distance[k]=d_Pos[i][k]-d_Pos[j][k];
 			double magnitude_sq=distance[0]*distance[0]+distance[1]*distance[1]+distance[2]*distance[2];
 			double magnitude=sqrt(magnitude_sq);
 			double accelmag=-1*GRAV_CONSTANT*d_mass[j]/magnitude_sq;
