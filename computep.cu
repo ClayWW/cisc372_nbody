@@ -26,7 +26,22 @@ __global__ void paccel(vector3* vals, vector3** accels, vector3* d_vel, vector3*
 
 }
 
-__global__ void psum(vector3 *d_hVel, vector3* d_hPos, vector3** accels){
+__global__ void psum(vector3 *hVel, vector3* hPos, vector3** accels, vector3* accel_sum){
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    int k;
+    if(i < NUMENTITIES){
+        FILL_VECTOR(accel_sum[i],0,0,0);
+		for (j=0;j<NUMENTITIES;j++){
+			for (k=0;k<3;k++)
+				accel_sum[k]+=accels[(i*NUMENTITIES)+j][k];
+		}
+		//compute the new velocity based on the acceleration and time interval
+		//compute the new position based on the velocity and time interval
+		for (k=0;k<3;k++){
+			hVel[i][k]+=accel_sum[i][k]*INTERVAL;
+			hPos[i][k]=hVel[i][k]*INTERVAL;
+		}
+	}
 }
 
 
