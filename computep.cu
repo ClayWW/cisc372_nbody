@@ -26,15 +26,14 @@ __global__ void paccel(vector3** accels, vector3* d_Pos, double *d_mass){
 
 __global__ void psum(vector3** accels, vector3* accel_sum, vector3* d_hPos, vector3* d_hVel){
     int i = blockIdx.x * blockDim.x + threadIdx.x;
-    int j,k;
     if(i < NUMENTITIES){
         FILL_VECTOR(accel_sum[i],0,0,0);
-		for (j=0;j<NUMENTITIES;j++){
-			for (k=0;k<3;k++){
-				accel_sum[k]+= accels[(i*NUMENTITIES)+j][k];
+		for (int j=0;j<NUMENTITIES;j++){
+			for (int k=0;k<3;k++){
+				accel_sum[i][k]+= accels[(ia*NUMENTITIES)+j][k];
             }
 		}
-		for (k=0;k<3;k++){
+		for (int k=0;k<3;k++){
 			d_hVel[i][k]+=accel_sum[i][k]*INTERVAL;
 			d_hPos[i][k]=d_hVel[i][k]*INTERVAL;
 		}
