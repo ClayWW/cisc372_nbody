@@ -26,12 +26,18 @@ __global__ void p_compute(vector3* values, vector3** accels, vector3* d_hPos, ve
 			FILL_VECTOR(accels[i][j],accelmag*distance[0]/magnitude,accelmag*distance[1]/magnitude,accelmag*distance[2]/magnitude);
         }
         vector3 accel_sum = {(double) *(accels[currID])[0], (double) *(accels[currID])[1], (double) *(accels[currID])[2]}; //sum accelerations
-		d_hVel[i][0] = d_hVel[i][0]+accel_sum[0]*INTERVAL; //updating the relative acceleration and velocities
+		/*
+        d_hVel[i][0] = d_hVel[i][0]+accel_sum[0]*INTERVAL; //updating the relative acceleration and velocities
 		d_hPos[i][0] = d_hVel[i][0]*INTERVAL;
 		d_hVel[i][1] = d_hVel[i][1]+accel_sum[1]*INTERVAL;
 		d_hPos[i][1] = d_hVel[i][1]*INTERVAL;
 		d_hVel[i][2] = d_hVel[i][2]+accel_sum[2]*INTERVAL;
 		d_hPos[i][2] = d_hVel[i][2]*INTERVAL;
+        */
+        for(int z = 0; z < 3; z++){ //seeing if for loop is faster
+            d_hVel[i][z] = d_hVel[i][z]+accel_sum[z]*INTERVAL;
+            d_hPos[i][z] = d_hVel[i][z]*INTERVAL;
+        }
     }
 
 }
