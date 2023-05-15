@@ -8,7 +8,7 @@
 vector3* values;
 vector3** accels;
 
-__global__ void p_compute(vector3** accels, vector3* d_Pos, double *d_mass){
+__global__ void p_compute(vector3* values, vector3** accels, vector3* d_hPos, vector3* d_hVel, double *d_mass){
     int currID = blockIdx.x * blockDim.x + threadIdx.x; //current thread block
     int i = currID / NUMENTITIES;
     int j = currID % NUMENTITIES;
