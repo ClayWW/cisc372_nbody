@@ -19,7 +19,7 @@ Output: None, calculates accelereration matrix and then sums the columns for sig
 */
 __global__ void p_compute(vector3* values, vector3** accels, vector3* d_hPos, vector3* d_hVel, double *d_mass){
     int currID = blockIdx.x * blockDim.x + threadIdx.x; //current thread block
-    int i = currID / NUMENTITIES;
+    int i = currID / NUMENTITIES; //locate position
     int j = currID % NUMENTITIES;
     int k;
     accels[currID] = &values[currID*NUMENTITIES]; //accels array for all the accel pointers
@@ -43,7 +43,7 @@ __global__ void p_compute(vector3* values, vector3** accels, vector3* d_hPos, ve
 		d_hVel[i][2] = d_hVel[i][2]+accel_sum[2]*INTERVAL;
 		d_hPos[i][2] = d_hVel[i][2]*INTERVAL;
         */
-        for(int z = 0; z < 3; z++){ //seeing if for loop is faster
+        for(int z = 0; z < 3; z++){ //seeing if for loop is faster. Update: I am speed.
             d_hVel[i][z] +=accel_sum[z]*INTERVAL;
             d_hPos[i][z] = d_hVel[i][z]*INTERVAL;
         }
