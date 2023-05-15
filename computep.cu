@@ -58,8 +58,8 @@ __global__ void psum(vector3** accels, vector3* accel_sum, vector3* d_hPos, vect
 void compute(){
     vector3 *d_hVel;
     vector3 *d_hPos;
-    vector3 *d_acc;
-    vector3 *d_sum;
+    //vector3 *d_acc;
+    //vector3 *d_sum;
     double *d_mass;
     int blocksize = 256;
     int totalBlocks = (NUMENTITIES+blocksize-1)/blocksize;
