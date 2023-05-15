@@ -19,7 +19,7 @@ __global__ void p_compute(vector3* values, vector3** accels, vector3* d_hPos, ve
             FILL_VECTOR(accels[i][j],0,0,0);
         }else{
             vector3 distance;
-            for (k=0;k<3;k++) distance[k]=d_Pos[i][k]-d_Pos[j][k];
+            for (k=0;k<3;k++) distance[k]=d_hPos[i][k]-d_hPos[j][k];
 			double magnitude_sq=distance[0]*distance[0]+distance[1]*distance[1]+distance[2]*distance[2];
 			double magnitude=sqrt(magnitude_sq);
 			double accelmag=-1*GRAV_CONSTANT*d_mass[j]/magnitude_sq;
