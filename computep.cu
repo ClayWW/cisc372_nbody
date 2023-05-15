@@ -12,6 +12,7 @@ __global__ void p_compute(vector3* values, vector3** accels, vector3* d_hPos, ve
     int currID = blockIdx.x * blockDim.x + threadIdx.x; //current thread block
     int i = currID / NUMENTITIES;
     int j = currID % NUMENTITIES;
+    int k;
     accels[currID] = &values[currID*NUMENTITIES]; //accels array for all the accel pointers
     if(currID < NUMENTITIES*NUMENTITIES){
         if(i == j){ //imma keep it a full stack I copied this from the compute.c file
