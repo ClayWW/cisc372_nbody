@@ -11,6 +11,7 @@ vector3** accels;
 __global__ void paccel(vector3* vals, vector3** accels, vector3* d_vel, vector3* d_pos, double* d_mass){
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     int j = blockIdx.y * blockDim.y + threadIdx.y;
+    int k;
     if(i < NUMENTITIES && j < NUMENTITIES){
         if(i == j){
             FILL_VECTOR(accels[i][j],0,0,0);
@@ -32,8 +33,9 @@ __global__ void psum(vector3 *hVel, vector3* hPos, vector3** accels, vector3* ac
     if(i < NUMENTITIES){
         FILL_VECTOR(accel_sum[i],0,0,0);
 		for (j=0;j<NUMENTITIES;j++){
-			for (k=0;k<3;k++)
+			for (k=0;k<3;k++){
 				accel_sum[k]+=accels[(i*NUMENTITIES)+j][k];
+            }
 		}
 		for (k=0;k<3;k++){
 			hVel[i][k]+=accel_sum[i][k]*INTERVAL;
