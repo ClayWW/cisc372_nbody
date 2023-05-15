@@ -1,0 +1,7 @@
+Script started on Mon May 15 18:46:05 2023
+]0;clayw@:~/cisc372_nbody[?1034h[clayw@r2v01 cisc372_nbody]$ exitsrun nbody
+This took a total time of 0.970000 seconds
+]0;clayw@:~/cisc372_nbody[clayw@r2v01 cisc372_nbody]$ exi   exit
+exit
+
+Script done on Mon May 15 18:46:19 2023
