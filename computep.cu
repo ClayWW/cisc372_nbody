@@ -31,7 +31,7 @@ __global__ void psum(vector3** accels, vector3* accel_sum, vector3* d_hPos, vect
         FILL_VECTOR(accel_sum[i],0,0,0);
 		for (j=0;j<NUMENTITIES;j++){
 			for (k=0;k<3;k++){
-				accel_sum[k]+= accels[(i*NUMENTITIES)+j][k];
+				accel_sum[k]= accel_sum[k] + accels[(i*NUMENTITIES)+j][k];
             }
 		}
 		for (k=0;k<3;k++){
